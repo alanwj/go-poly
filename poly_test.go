@@ -176,6 +176,27 @@ func TestMul(t *testing.T) {
 	}
 }
 
+func TestMod(t *testing.T) {
+	cases := []struct {
+		p    Poly
+		q    Poly
+		want Poly
+	}{
+		{Poly{}, Poly{}, Poly{}},
+		{New(), New(), New()},
+		{Poly{}, New(1, 2), Poly{}},
+		{New(2, 1), New(-2, 1), New(4)},
+		{New(3, 4), New(1, 2), New(1)},
+		{New(1, 2, 3), New(3, 4), New(1, -0.25)},
+		{New(3, 4), New(1, 2, 3), New(3, 4)},
+	}
+	for i, c := range cases {
+		if got := c.p.Mod(c.q); !comparePoly(got, c.want) {
+			t.Errorf("case %d: Mod(%q) on %q == %q, want %q", i, c.q, c.p, got, c.want)
+		}
+	}
+}
+
 // Tests that derivatives are computed correctly.
 func TestDer(t *testing.T) {
 	cases := []struct {

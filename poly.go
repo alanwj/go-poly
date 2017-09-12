@@ -128,7 +128,7 @@ func (p Poly) Mod(q Poly) Poly {
   r := p
   d := q.Deg()
   c := q.Coeff(q.Deg())
-  if r.Deg() >= d {
+  for r.Deg() >= d {
     sT := make([]float64, r.Deg()-d + 1)
     sT[len(sT)-1] = r.Coeff(r.Deg())/c
     s := New(sT...)

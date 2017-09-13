@@ -123,6 +123,20 @@ func (p Poly) Mul(q Poly) Poly {
 	return normalized(c)
 }
 
+// use Euclidean division algorithm to find remainder (the mod)
+func (p Poly) Mod(q Poly) Poly {
+	r := p
+	d := q.Deg()
+	c := q.Coeff(q.Deg())
+	for r.Deg() >= d {
+		sT := make([]float64, r.Deg()-d+1)
+		sT[len(sT)-1] = r.Coeff(r.Deg()) / c
+		s := New(sT...)
+		r = r.Sub(s.Mul(q))
+	}
+	return r
+}
+
 // Computes the derivative of a polynomial.
 func (p Poly) Der() Poly {
 	pco := p.co()
